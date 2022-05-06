@@ -1,0 +1,11 @@
+{
+  "release": "1",
+  "hcloud_token": "add hetzner api 64 char token here",
+  "ssh_key": "add ssh public key here",
+  "datacenter": "fsn1-cd5",
+  "location": "fsn1",
+  "os": "ubuntu-18.04",
+  "ssh_user": "exampleuser",
+  "ssh_port": "22",
+  "env": "prod"
+}

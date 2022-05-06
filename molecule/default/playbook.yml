@@ -1,0 +1,17 @@
+#########################################################################
+# Title:         hetzner_debian11_ansible                               #
+# Author(s):     Patrice Le Guyader                                     #
+# URL:           none                                                   #
+# Docker Image:  multiples                                              #
+# --                                                                    #
+#         Part of the hetzner ansible project:                          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include patlegu.hetzner_debian11_ansible"
+      include_role:
+        name: "patlegu.hetzner_debian11_ansible"

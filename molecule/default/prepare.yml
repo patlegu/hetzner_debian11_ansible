@@ -1,0 +1,19 @@
+#########################################################################
+# Title:         hetzner_debian11_ansible                               #
+# Author(s):     Patrice Le Guyader                                     #
+# URL:           none                                                   #
+# Docker Image:  multiples                                              #
+# --                                                                    #
+#         Part of the hetzner ansible project:                          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-zipstream)
+      become: true
+      changed_when: false

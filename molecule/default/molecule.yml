@@ -1,0 +1,38 @@
+#########################################################################
+# Title:         hetzner_debian11_ansible                               #
+# Author(s):     Patrice Le Guyader                                     #
+# URL:           none                                                   #
+# Docker Image:  multiples                                              #
+# --                                                                    #
+#         Part of the hetzner ansible project:                          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+dependency:
+  name: galaxy
+driver:
+  name: hetznercloud
+platforms:
+  - name: "patlegu.hetzner_debian11_ansible"
+    server_type: cx11
+    image: debian-11
+    volumes:
+      - name: "molecule-hetznercloud-volume-1"
+    networks:
+      molecule-hetznercloud-network-1:
+        ip_range: 10.10.0.0/16
+        subnet:
+          ip: 10.10.10.1/24
+          type: cloud
+          network_zone: eu-central
+      molecule-hetznercloud-network-2:
+        ip_range: 10.20.0.0/16
+        subnet:
+          ip: 10.20.10.1/24
+provisioner:
+  name: ansible
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .

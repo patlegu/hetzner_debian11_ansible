@@ -1,0 +1,20 @@
+#########################################################################
+# Title:         hetzner_debian11_ansible                               #
+# Author(s):     Patrice Le Guyader                                     #
+# URL:           none                                                   #
+# Docker Image:  multiples                                              #
+# --                                                                    #
+#         Part of the hetzner ansible project:                          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Example assertion
+    assert:
+      that: true

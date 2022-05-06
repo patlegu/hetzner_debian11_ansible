@@ -1,0 +1,11 @@
+build/packer_cache
+development/core
+.vagrant/
+build/OPNsense*.iso
+build/opnsense*.iso
+build/OPNsense*.bz2
+build/*.box
+build/output
+.idea/workspace.xml
+To_Be_Deleted
+vars.json
