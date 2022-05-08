@@ -10,3 +10,4 @@
 #########################################################################
 ---
 # defaults file for hetzner_debian11_ansible
+ansible_no_log: false

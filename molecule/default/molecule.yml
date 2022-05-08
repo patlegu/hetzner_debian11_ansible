@@ -14,11 +14,10 @@ dependency:
 driver:
   name: hetznercloud
 platforms:
-  - name: "patlegu.hetzner_debian11_ansible"
+  - name: "hetzner-debian11-ansible"
     server_type: cx11
     image: debian-11
-    volumes:
-      - name: "molecule-hetznercloud-volume-1"
+    location: nbg1
     networks:
       molecule-hetznercloud-network-1:
         ip_range: 10.10.0.0/16

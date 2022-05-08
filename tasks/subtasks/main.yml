@@ -14,7 +14,7 @@
   hosts: localhost
   connection: local
   gather_facts: true
-  no_log: "{{ molecule_no_log }}"
+  no_log: "{{ pri_setup_builders_info.common.ansible_no_log }}"
   vars:
     ssh_port: 22
     ssh_user: root
@@ -32,7 +32,7 @@
       set_fact:
         ssh_key_name: "ansible-generated-{{ 12345 | random | to_uuid }}"
 
-    - name: Register SSH key for test instance(s)
+    - name: Register SSH key for instance(s)
       hcloud_ssh_key:
         name: "{{ ssh_key_name }}"
         public_key: "{{ generated_ssh_key.ssh_public_key }}"
@@ -52,7 +52,7 @@
         api_token: "{{ lookup('env', 'HCLOUD_TOKEN') }}"
         state: present
       register: server
-      with_items: "{{ molecule_yml.platforms }}"
+      with_items: "{{ pri_hetzner_setup_host_config.platforms }}"
       async: 7200
       poll: 0
 
