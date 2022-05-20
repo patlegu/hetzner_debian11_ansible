@@ -12,9 +12,9 @@
 - name: Read Hetzner informations from json data files.
   hosts: localhost
   vars:
-    ansible_debug: true
+    ansible_debug: false
     location_name: Helsinki
-    server_type: "cx31"
+    server_type: "ccx31"
     addressbook: {}
   tasks:
     - name: Load the JSON location file content
@@ -22,63 +22,35 @@
         hetzner_location: "{{ lookup('file', 'vars/hetzner-location-list.json') | from_json }}"
     - debug:
         var: hetzner_location
-# {
-#     "hetzner_location": [
-#         {
-#             "city": "Falkenstein",
-#             "country": "DE",
-#             "description": "Falkenstein DC Park 1",
-#             "id": 1,
-#             "latitude": 50.47612,
-#             "longitude": 12.370071,
-#             "name": "fsn1",
-#             "network_zone": "eu-central"
-#         },
-#         {
-#             "city": "Nuremberg",
-#             "country": "DE",
-#             "description": "Nuremberg DC Park 1",
-#             "id": 2,
-#             "latitude": 49.452102,
-#             "longitude": 11.076665,
-#             "name": "nbg1",
-#             "network_zone": "eu-central"
-#         },
-#         {
-#             "city": "Helsinki",
-#             "country": "FI",
-#             "description": "Helsinki DC Park 1",
-#             "id": 3,
-#             "latitude": 60.169855,
-#             "longitude": 24.938379,
-#             "name": "hel1",
-#             "network_zone": "eu-central"
-#         },
-#         {
-#             "city": "Ashburn, VA",
-#             "country": "US",
-#             "description": "Ashburn, VA",
-#             "id": 4,
-#             "latitude": 39.045821,
-#             "longitude": -77.487073,
-#             "name": "ash",
-#             "network_zone": "us-east"
-#         }
-#     ]
-# }
+      when: ansible_debug
 
+    - name: Load the JSON servers types file content
+      no_log: true
+      set_fact:
+        hetzner_server_types: "{{lookup('file', 'vars/hetzner-server-types.json')| from_json }}"
 
-    # - debug:
-    #     msg: "{{ hetzner_location | community.general.json_query(query) | first }}"
-    #   vars:
-    #     query: "[?city == '{{ location_name }}'].name"
+    - name: Affichage du contenu du fichier hetzner-server-types.json
+      debug: var=hetzner_server_types
+      when: ansible_debug
+
+    - name: defining variables
+      set_fact:
+        network_zones: "{{ hetzner_location | map(attribute='network_zone') | join(',') }}"
+        eu_central: "{{ hetzner_location | selectattr('network_zone','eq','eu-central')|map(attribute='name')|join(',') }}"
+        us_east: "{{ hetzner_location | selectattr('network_zone','eq','us-east')|map(attribute='name')|join(',') }}"
+        germany: "{{ hetzner_location | selectattr('country','eq','DE')|map(attribute='name')|join(',') }}"
+        finlande: "{{ hetzner_location | selectattr('country','eq','FI')|map(attribute='name')|join(',') }}"
+        usa: "{{ hetzner_location | selectattr('country','eq','US')|map(attribute='name')|join(',') }}"
+    #   # 
+        all_server_types: "{{ hetzner_server_types | map(attribute='name') | join(',') }}"
+        core_group_below_2: "{{ hetzner_server_types | selectattr('cores','<',2) | map(attribute='name')| join(',') }}"
+        core_group_2_to_3: "{{ hetzner_server_types | selectattr('cores','>=',2) | selectattr('cores','<=',3)| map(attribute='name')| join(',') }}"
+        core_group_4_to_6: "{{ hetzner_server_types | selectattr('cores','>',3) | selectattr('cores','<=',6)| map(attribute='name')| join(',') }}"
+        core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')| join(',') }}"
+        # core_group_2_to_3_and_shared_cpu: "{{ hetzner_server_types | selectattr('cpu_type','eq','shared')| selectattr('name','in',core_group_2_to_3)|map(attribute='name')|join(',')}}"
+        requested_group: "{{ hetzner_server_types | selectattr('name','==',server_type)}}"
+
     - name: debug
-      vars: 
-        eu_central: "{{ hetzner_location | selectattr('network_zone','eq','eu-central') }}"
-        us_east: "{{ hetzner_location | selectattr('network_zone','eq','us-east') }}"
-        germany: "{{ hetzner_location | selectattr('country','eq','DE') }}"
-        finlande: "{{ hetzner_location | selectattr('country','eq','FI') }}"
-        usa: "{{ hetzner_location | selectattr('country','eq','US') }}"
       debug:
         msg:
           - "-------------------"
@@ -101,6 +73,11 @@
           - "Country United States"
           - "-------------------"
           - "{{usa}}"
+          - "-------------------"
+          - "All zones"
+          - "-------------------"
+          - "{{network_zones}}"
+      when: ansible_debug
 
     - name: Ansible SelectAttr
       debug:
@@ -115,6 +92,8 @@
           - "==========================="
           - '{{ hetzner_location | select("match", ".+city.+:.+Helsinki.+")}}'
           - ""
+      when: ansible_debug
+
 #    - name: "Create addressbook to store"
 #      no_log: false
 #      set_fact:
@@ -132,58 +111,50 @@
 #      debug: var=addressbook
 
 ######################################################################################
-    - name: Load the JSON servers types file content
-      set_fact:
-        hetzner_server_types: "{{lookup('file', 'vars/hetzner-server-types.json')| from_json }}"
-  
-    # - name: Affichage du contenu du fichier hetzner-server-types.json
-    #   debug: var=hetzner_server_types
-
     - name: debug
-      vars:
-        coregroup2to5: "{{ hetzner_server_types | selectattr('cores','>=',2) | selectattr('cores','<=',5) }}"
-        core_group_2_to_5_and_shared_cpu: "{{ coregroup2to5 | selectattr('cpu_type','eq','shared')}}"
-        # cx31_group: "{{ hetzner_server_types | selectattr('name','==','{{server_type}}')}}"
-        cx31_group: "{{ hetzner_server_types | selectattr('name','==','cx31')}}"
       debug:
         msg:
           - "-------------------"
-          - "CPU Cores between 2 and 5"
+          - "CPU Cores below 2"
           - "-------------------"
-          - "{{coregroup2to5}}"
+          - "{{core_group_below_2}}"
           - "-------------------"
-          - "CPU Cores between 2 and 5 and shared CPU"
+          - "CPU Cores between 2 and 3"
           - "-------------------"
-          - "{{core_group_2_to_5_and_shared_cpu}}"
+          - "{{core_group_2_to_3}}"
           - "-------------------"
-          - "CX31 Server type"
+          - "CPU Cores between 4 and 6"
           - "-------------------"
-          - "{{cx31_group}}"
+          - "{{core_group_4_to_6}}"
+          - "-------------------"
+          - "CPU Cores over 6"
+          - "-------------------"
+          - "{{core_group_over_6}}"
+          - "-------------------"
+          # - "CPU Cores between 2 and 3 and shared CPU"
+          # - "-------------------"
+          # - "{{core_group_2_to_3_and_shared_cpu}}"
+          - "-------------------"
+          - "{{server_type}} Server type"
+          - "-------------------"
+          - "{{requested_group}}"
+          - "All Server type"
+          - "-------------------"
+          - "{{all_server_types}}"
+      # when: ansible_debug
 
-    # - name: "Traitement des informations concernant les types des serveurs"
-    #   no_log: false
-    #   set_fact:
-    #     server_type_book: "{{ server_type_book|default([]) + [{'name' : item.name, 'Id' : item.id, 'cores' : item.cores, 'disk' : item.disk, 'memory': item.memory }] }}"
-    #   with_items: "{{hetzner_server_types|json_query(query)}}"
-    #   vars:
-    #     query: "[*]"
+    - name: Caracteristics of servers with more than 6 cores
+      no_log: true
+      # vars:
+        # core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')|join(',') }}"
+      debug:
+        msg: "The server {{ item.name }} has {{ item.cores }} cores with {{ item.disk }} Gb"
+      with_items: "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
+      when: ansible_debug
 
-    # - name: Contenu du dictionnaire server_type_book
-    #   debug:
-    #     msg: "The server {{ item.name }} has {{ item.cores }} cores with ({{ item.disk }})"
-    #   loop: "{{ hetzner_server_types | dict2items }}"
-      # loop: "{{ lookup('dict', hetzner_server_types) }}"
-
-    # - debug:
-    #     msg: "{{server_type_book | json_query(query)}}"
-    #   vars: 
-    #     query: "[?name == '{{ server_type }}'].cores"
-
-  # "cores": 1,
-  # "cpu_type": "shared",
-  # "deprecated": null,
-  # "description": "CX11",
-  # "disk": 20,
-  # "id": 1,
-  # "memory": 2,
-  # "name": "cx11",
+    - name: Content of the hetzner_server_types
+      debug:
+        msg:
+          - "==========================="
+          - "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
+      when: ansible_debug
