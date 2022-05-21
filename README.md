@@ -5,29 +5,43 @@ The purpose of this role is to create a server on the Hetzner Cloud infrastructu
 
 ## how to define and use hetzner token.
 * Put it in the vars.json (copy vars.example.json)
+* Encrypt it with ansible-vault to get more security:
+```
+ansible-vault encrypt vars.json
+New Vault password: 
+Confirm New Vault password: 
+Encryption successful
+```
 * install jq ([sed for json](https://stedolan.github.io/jq/)) on your server if you don't have it.
 * initialize you token as a variable:
 ```
-export HCLOUD_TOKEN=$(jq -r .hcloud_token vars.json)
+export HCLOUD_TOKEN=$(ansible-vault view vars.json|jq -r .hcloud_token)
 ```
+The password entered previously for encrypting the file, will be asked. You can check the variable with the folowing command:
+```
+echo $HCLOUD_TOKEN
+```
+
 * ansible_no_log: true|false
-* 
+
 ## How to define all the hetzner information cloud in json files.
 ### Hetzner servers type informations
-Hetzner servers types are all generated with the follwing command to create the json files:
+Hetzner servers types are all generated with the following command to create the json files:
 ```
-hcloud server-type list -o noheader -o columns=name | while read SERVER; do  hcloud server-type describe $SERVER -o json >> vars/server-types-${SERVER}.json; done
+echo "[" > vars/hetzner-server-types.json;hcloud server-type list -o noheader -o columns=name | while read SERVER; do  hcloud server-type describe $SERVER -o json;echo ","; done >> vars/hetzner-server-types.json;echo "]" >> vars/hetzner-server-types.json
 ```
 ### Hetzner location informations
 Hetzner servers locations are all generated with the follwing command :
 ```
-hcloud location list -o noheader -o columns=name| while read LOCATION; do hcloud location describe $LOCATION -o json > vars/location-${LOCATION}.json
+echo "[" > vars/hetzner-location-list.json;hcloud location list -o noheader -o columns=name| while read LOCATION; do hcloud location describe $LOCATION -o json;echo ",";done >> vars/hetzner-location-list.json;echo "]" >> vars/hetzner-location-list.json
 ```
 ### Hetzner iso images informations
 Hetzner iso list is generated with the following command.
 ```
-hcloud iso list -o noheader -o columns=id |while read ID; do hcloud iso describe $ID -o json; done > vars/hetzner-iso-list.json
+echo "[" > vars/hetzner-iso-list.json;hcloud iso list -o noheader -o columns=id |while read ID; do hcloud iso describe $ID -o json;echo ","; done >> vars/hetzner-iso-list.json;echo "]" >> vars/hetzner-iso-list.json
 ```
+The last comma is not needed in each file, just before the last ]. Need to be deleted.
+
 Requirements
 ------------
 

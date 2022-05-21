@@ -11,6 +11,7 @@
 ---
 - name: Read Hetzner informations from json data files.
   hosts: localhost
+  # debugger: on_failed
   vars:
     ansible_debug: false
     location_name: Helsinki
@@ -18,23 +19,25 @@
     addressbook: {}
   tasks:
     - name: Load the JSON location file content
-      set_fact:
+      ansible.builtin.set_fact:
         hetzner_location: "{{ lookup('file', 'vars/hetzner-location-list.json') | from_json }}"
-    - debug:
+    - name: Print Hetzner location
+      ansible.builtin.debug:
         var: hetzner_location
       when: ansible_debug
 
     - name: Load the JSON servers types file content
-      no_log: true
-      set_fact:
-        hetzner_server_types: "{{lookup('file', 'vars/hetzner-server-types.json')| from_json }}"
+      no_log: false
+      ansible.builtin.set_fact:
+        hetzner_server_types: "{{ lookup('file', 'titi.json')| from_json }}"
+        # hetzner_server_types: "{{ lookup('file', 'vars/hetzner-server-types.json')| from_json }}"
 
     - name: Affichage du contenu du fichier hetzner-server-types.json
-      debug: var=hetzner_server_types
+      ansible.builtin.debug: var=hetzner_server_types
       when: ansible_debug
 
     - name: defining variables
-      set_fact:
+      ansible.builtin.set_fact:
         network_zones: "{{ hetzner_location | map(attribute='network_zone') | join(',') }}"
         eu_central: "{{ hetzner_location | selectattr('network_zone','eq','eu-central')|map(attribute='name')|join(',') }}"
         us_east: "{{ hetzner_location | selectattr('network_zone','eq','us-east')|map(attribute='name')|join(',') }}"
@@ -48,39 +51,39 @@
         core_group_4_to_6: "{{ hetzner_server_types | selectattr('cores','>',3) | selectattr('cores','<=',6)| map(attribute='name')| join(',') }}"
         core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')| join(',') }}"
         # core_group_2_to_3_and_shared_cpu: "{{ hetzner_server_types | selectattr('cpu_type','eq','shared')| selectattr('name','in',core_group_2_to_3)|map(attribute='name')|join(',')}}"
-        requested_group: "{{ hetzner_server_types | selectattr('name','==',server_type)}}"
+        requested_group: "{{ hetzner_server_types | selectattr('name','==',server_type) }}"
 
     - name: debug
-      debug:
+      ansible.builtin.debug:
         msg:
           - "-------------------"
           - "Network Zone eu-central"
           - "-------------------"
-          - "{{eu_central}}"
+          - "{{ eu_central }}"
           - "-------------------"
           - "Network Zone us-east"
           - "-------------------"
-          - "{{us_east}}"
+          - "{{ us_east }}"
           - "-------------------"
           - "Country Germany"
           - "-------------------"
-          - "{{germany}}"
+          - "{{ germany }}"
           - "-------------------"
           - "Country Finlande"
           - "-------------------"
-          - "{{finlande}}"
+          - "{{ finlande }}"
           - "-------------------"
           - "Country United States"
           - "-------------------"
-          - "{{usa}}"
+          - "{{ usa }}"
           - "-------------------"
           - "All zones"
           - "-------------------"
-          - "{{network_zones}}"
+          - "{{ network_zones }}"
       when: ansible_debug
 
     - name: Ansible SelectAttr
-      debug:
+      ansible.builtin.debug:
         msg:
           - "==========================="
           - "With SelectAttr - Filter using Attribute name of Object"
@@ -90,7 +93,7 @@
           - "==========================="
           - "With Select - We are filtering using regex as the elements of list are treated as a normal string not as object/dict"
           - "==========================="
-          - '{{ hetzner_location | select("match", ".+city.+:.+Helsinki.+")}}'
+          - '{{ hetzner_location | select("match", ".+city.+:.+Helsinki.+") }}'
           - ""
       when: ansible_debug
 
@@ -112,49 +115,49 @@
 
 ######################################################################################
     - name: debug
-      debug:
+      ansible.builtin.debug:
         msg:
           - "-------------------"
           - "CPU Cores below 2"
           - "-------------------"
-          - "{{core_group_below_2}}"
+          - "{{ core_group_below_2 }}"
           - "-------------------"
           - "CPU Cores between 2 and 3"
           - "-------------------"
-          - "{{core_group_2_to_3}}"
+          - "{{ core_group_2_to_3 }}"
           - "-------------------"
           - "CPU Cores between 4 and 6"
           - "-------------------"
-          - "{{core_group_4_to_6}}"
+          - "{{ core_group_4_to_6 }}"
           - "-------------------"
           - "CPU Cores over 6"
           - "-------------------"
-          - "{{core_group_over_6}}"
+          - "{{ core_group_over_6 }}"
           - "-------------------"
           # - "CPU Cores between 2 and 3 and shared CPU"
           # - "-------------------"
           # - "{{core_group_2_to_3_and_shared_cpu}}"
           - "-------------------"
-          - "{{server_type}} Server type"
+          - "{{ server_type }} Server type"
           - "-------------------"
-          - "{{requested_group}}"
+          - "{{ requested_group }}"
           - "All Server type"
           - "-------------------"
-          - "{{all_server_types}}"
+          - "{{ all_server_types }}"
       # when: ansible_debug
 
     - name: Caracteristics of servers with more than 6 cores
       no_log: true
       # vars:
         # core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')|join(',') }}"
-      debug:
+      ansible.builtin.debug:
         msg: "The server {{ item.name }} has {{ item.cores }} cores with {{ item.disk }} Gb"
       with_items: "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
-      when: ansible_debug
+      # when: ansible_debug
 
     - name: Content of the hetzner_server_types
-      debug:
+      ansible.builtin.debug:
         msg:
           - "==========================="
           - "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
-      when: ansible_debug
+      # when: ansible_debug

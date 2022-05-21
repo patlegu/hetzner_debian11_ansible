@@ -1,347 +1,396 @@
 [
-  {
+{
   "deprecated": null,
   "description": "Windows Server 2016 English",
   "id": 30,
   "name": "SW_DVD9_Win_Svr_STD_Core_and_DataCtr_Core_2016_64Bit_English_-2_MLF_X21-22843.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2016 German",
   "id": 32,
   "name": "SW_DVD9_Win_Svr_STD_Core_and_DataCtr_Core_2016_64Bit_German_-2_MLF_X21-22827.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2016 Russian",
   "id": 35,
   "name": "SW_DVD9_Win_Svr_STD_Core_and_DataCtr_Core_2016_64Bit_Russian_-2_MLF_X21-22838.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2016 Language Pack",
   "id": 36,
   "name": "SW_DVD9_NTRL_Win_Svr_Language_Pack_2016_64Bit_MultiLang_-3_X21-22616.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2012 R2 Language Pack",
   "id": 43,
   "name": "SW_DVD5_NTRL_Win_Svr_Language_Pack_2012_R2_64Bit_MultiLang_FPP_VL_OEM_X19-05196.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2012 R2 German",
   "id": 54,
   "name": "SW_DVD9_Windows_Svr_Std_and_DataCtr_2012_R2_64Bit_German_-4_MLF_X19-82895.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2012 R2 English",
   "id": 55,
   "name": "SW_DVD5_Windows_Svr_Std_and_DataCtr_2012_R2_64Bit_English_Core_MLF_X19-05182.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2012 R2 Russian",
   "id": 56,
   "name": "SW_DVD9_Windows_Svr_Std_and_DataCtr_2012_R2_64Bit_Russian_-4_MLF_X19-82917.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "SystemRescueCD (2018-04-02)",
   "id": 551,
   "name": "systemrescuecd-x86-5.2.2.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2019 English",
   "id": 1210,
   "name": "SW_DVD9_Win_Server_STD_CORE_2019_64Bit_English_DC_STD_MLF_X21-96581.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2019 German",
   "id": 1211,
   "name": "SW_DVD9_Win_Server_STD_CORE_2019_64Bit_German_DC_STD_MLF_X21-96583.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Ubuntu 18.04.4 (amd64)",
   "id": 3483,
   "name": "ubuntu-18.04.4-server-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "NetBSD 9.1 (amd64)",
   "id": 5031,
   "name": "NetBSD-9.1-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "CentOS 7.9 (amd64/netinstall)",
   "id": 5215,
   "name": "CentOS-7-x86_64-NetInstall-2009.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Clonezilla 2.7.0",
   "id": 5222,
   "name": "clonezilla-live-2.7.0-10-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2019 Russian",
   "id": 6338,
   "name": "SW_DVD9_Win_Server_STD_CORE_2019_1809.11_64Bit_Russian_DC_STD_MLF_X22-51054.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "OpenBSD 6.9",
   "id": 7039,
   "name": "install69.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "FreeBSD 13.0 (amd64/netinstall)",
   "id": 7300,
   "name": "FreeBSD-13.0-RELEASE-amd64-bootonly.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Securepoint UTM Interactive Installer",
   "id": 7549,
   "name": "utm-installer-interactive.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "k3OS v0.21.1 (amd64)",
   "id": 7576,
   "name": "k3os-amd64_v0.21.1-k3s1r0.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Proxmox VE 6.4 ISO Installer",
   "id": 7630,
   "name": "proxmox-ve_6.4-1.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "RancherOS 1.5.8",
   "id": 7634,
   "name": "rancheros_v1.5.8.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "openSUSE Leap 15.3",
   "id": 7829,
   "name": "openSUSE-Leap-15.3-DVD-x86_64-Current.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2022 English",
   "id": 8637,
   "name": "SW_DVD9_Win_Server_STD_CORE_2022__64Bit_English_DC_STD_MLF_X22-74290.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2022 German",
   "id": 8638,
   "name": "SW_DVD9_Win_Server_STD_CORE_2022__64Bit_German_DC_STD_MLF_X22-74292.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Windows Server 2022 Russian",
   "id": 8639,
   "name": "SW_DVD9_Win_Server_STD_CORE_2022__64Bit_Russian_DC_STD_MLF_X22-74303.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "OpenBSD 7.0",
   "id": 10117,
   "name": "install70.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Oracle Linux 8.4 (amd64/boot)",
   "id": 10154,
   "name": "OL8U4_x86_64-boot.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "VyOS 1.4 (amd64)",
   "id": 10433,
   "name": "vyos-1.4-rolling-202111150317-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Kali Linux 2021.3a installer (amd64)",
   "id": 10716,
   "name": "kali-linux-2021.3a-installer-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Debian 10.11 (amd64/netinstall)",
   "id": 10718,
   "name": "debian-10.11.0-amd64-netinst.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "CentOS 8.5 (amd64/netinstall)",
   "id": 10719,
   "name": "CentOS-8.5.2111-x86_64-boot.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "AlmaLinux 8.5 (amd64/boot)",
   "id": 10720,
   "name": "AlmaLinux-8.5-x86_64-boot.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "IPFire 2.27 (amd64)",
   "id": 10721,
   "name": "ipfire-2.27.x86_64-full-core160.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Rocky Linux 8.5 (amd64/boot)",
   "id": 10722,
   "name": "Rocky-8.5-x86_64-boot.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Archlinux 2021.11.01 (amd64)",
   "id": 10723,
   "name": "archlinux-2021.11.01-x86_64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Alpine Virtual 3.15 (amd64)",
   "id": 10724,
   "name": "alpine-virt-3.15.0-x86_64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "pfSense CE 2.5.2 (amd64)",
   "id": 11161,
   "name": "pfSense-CE-2.5.2-RELEASE-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "FreeBSD 12.3 (amd64/netinstall)",
   "id": 11308,
   "name": "FreeBSD-12.3-RELEASE-amd64-bootonly.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "NixOS 21.11 (amd64/minimal)",
   "id": 11311,
   "name": "nixos-minimal-21.11.335288.3ddd960a3b5-x86_64-linux.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "FreePBX 2104 (amd64)",
   "id": 11325,
   "name": "SNG7-PBX-64bit-2104-1.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "3CX Debian 10 (amd64)",
   "id": 11459,
   "name": "debian-amd64-netinst-3cx.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Debian 11.2 (amd64/netinstall)",
   "id": 11471,
   "name": "debian-11.2.0-amd64-netinst.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "virtio-win-0.1.215",
   "id": 11559,
   "name": "virtio-win-0.1.215.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "OPNsense 22.1 (amd64)",
   "id": 11624,
   "name": "OPNsense-22.1-OpenSSL-dvd-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Proxmox Mail Gateway 7.1 ISO Installer",
   "id": 11730,
   "name": "proxmox-mailgateway_7.1-1.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Ubuntu 20.04.4 Live Server (amd64)",
   "id": 11955,
   "name": "ubuntu-20.04.4-live-server-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "pfSense CE 2.6.0 (amd64)",
   "id": 12164,
   "name": "pfSense-CE-2.6.0-RELEASE-amd64.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "OpenBSD 7.1",
   "id": 13178,
   "name": "install71.iso",
   "type": "public"
-},
+}
+,
 {
   "deprecated": null,
   "description": "Ubuntu 22.04 Live Server (amd64)",
