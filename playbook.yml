@@ -14,9 +14,16 @@
   # debugger: on_failed
   vars:
     ansible_debug: false
-    location_name: Helsinki
-    server_type: "ccx31"
+    # location_name: Helsinki
+    # location_name: Falkenstein
+    # location_name: Nuremberg
+    location_name: Ashburn
+    server_type: "cpx51"
     addressbook: {}
+    # vm_type: ""
+    # vm_cores: ""
+    # vm_disk: ""
+    # vm_price: ""
   tasks:
     - name: Load the JSON location file content
       ansible.builtin.set_fact:
@@ -29,8 +36,7 @@
     - name: Load the JSON servers types file content
       no_log: false
       ansible.builtin.set_fact:
-        hetzner_server_types: "{{ lookup('file', 'titi.json')| from_json }}"
-        # hetzner_server_types: "{{ lookup('file', 'vars/hetzner-server-types.json')| from_json }}"
+        hetzner_server_types: "{{ lookup('file', 'vars/hetzner-server-types.json')| from_json }}"
 
     - name: Affichage du contenu du fichier hetzner-server-types.json
       ansible.builtin.debug: var=hetzner_server_types
@@ -153,11 +159,48 @@
       ansible.builtin.debug:
         msg: "The server {{ item.name }} has {{ item.cores }} cores with {{ item.disk }} Gb"
       with_items: "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
-      # when: ansible_debug
+      when: ansible_debug
 
     - name: Content of the hetzner_server_types
       ansible.builtin.debug:
         msg:
           - "==========================="
           - "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
+      when: ansible_debug
+
+    - name: Getting the detail of the requested server for debug
+      ansible.builtin.debug:
+        msg: "The server {{ item.name }} has {{ item.cores }} cores with {{ item.disk }} Gb"
+      with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
+      # when: ansible_debug
+
+    - name: Getting the cost of the requested server
+      ansible.builtin.set_fact:
+        vm_location: "{{ hetzner_location | selectattr('city','eq',location_name)|map(attribute='name')|join(',') }}"
+
+    - name: Getting the details of the requested server
+      ansible.builtin.set_fact:
+        vm_type: "{{ item.name }}"
+        vm_cores: "{{ item.cores }}"
+        vm_memory: "{{ item.memory }}"
+        vm_disk: "{{ item.disk }}"
+        vm_price: "{{ item.prices|selectattr('location','eq',vm_location)|map(attribute='price_monthly')|map(attribute='gross')|map('regex_replace', '0{1,}$', '')| product(['EUR'])|map('join',' ')|join(',') }}"
+      with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
+
+    - name: debugging the detail of the requested server
+      ansible.builtin.debug:
+        msg:
+          - "-------------------"
+          - "vm_type: {{ item.name }}"
+          - "vm_cores: {{ item.cores }}"
+          - "vm_disk: {{ item.disk }}"
+          - "Location: {{ vm_location }}"
+          - "vm_price: {{ item.prices|selectattr('location','eq',vm_location)|map(attribute='price_monthly')|map(attribute='gross')|map('regex_replace', '0{1,}$', '')| product(['EUR'])|map('join',' ')|join(',')}}"
+          - "-------------------"
+      with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
+      when: ansible_debug
+
+    - name: Requested server
+      ansible.builtin.debug:
+        msg: "The server {{ vm_type }} cost {{ vm_price }} monthly for {{ vm_cores }} cores, {{ vm_memory}}Gb of RAM and {{ vm_disk }} Gb in {{ location_name }}"
       # when: ansible_debug
