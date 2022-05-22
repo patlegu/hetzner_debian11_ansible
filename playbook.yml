@@ -195,12 +195,12 @@
           - "vm_cores: {{ item.cores }}"
           - "vm_disk: {{ item.disk }}"
           - "Location: {{ vm_location }}"
-          - "vm_price: {{ item.prices|selectattr('location','eq',vm_location)|map(attribute='price_monthly')|map(attribute='gross')|map('regex_replace', '0{1,}$', '')| product(['EUR'])|map('join',' ')|join(',')}}"
+          - "vm_price: {{ item.prices|selectattr('location','eq',vm_location)|map(attribute='price_monthly')|map(attribute='gross')|map('regex_replace', '0{1,}$', '')| product(['EUR'])|map('join',' ')|join(',') }}"
           - "-------------------"
       with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
       when: ansible_debug
 
     - name: Requested server
       ansible.builtin.debug:
-        msg: "The server {{ vm_type }} cost {{ vm_price }} monthly for {{ vm_cores }} cores, {{ vm_memory}}Gb of RAM and {{ vm_disk }} Gb in {{ location_name }}"
+        msg: "The server {{ vm_type }} cost {{ vm_price }} monthly for {{ vm_cores }} cores, {{ vm_memory }}Gb of RAM and {{ vm_disk }} Gb in {{ location_name }}"
       # when: ansible_debug
