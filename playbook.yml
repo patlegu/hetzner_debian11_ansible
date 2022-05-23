@@ -2,7 +2,7 @@
 # Title:         hetzner_server_ansible                                 #
 # Author(s):     Patrice Le Guyader                                     #
 # URL:           none                                                   #
-# Docker Image:  multiples                                              #
+# Hetzner Image: multiples                                              #
 # --                                                                    #
 #         Part of the hetzner ansible project:                          #
 #########################################################################
@@ -19,11 +19,6 @@
     # location_name: Nuremberg
     location_name: Ashburn
     server_type: "cpx51"
-    addressbook: {}
-    # vm_type: ""
-    # vm_cores: ""
-    # vm_disk: ""
-    # vm_price: ""
   tasks:
     - name: Load the JSON location file content
       ansible.builtin.set_fact:
