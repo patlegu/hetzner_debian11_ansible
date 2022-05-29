@@ -16,9 +16,17 @@
   #   - vars.json
   #   - gitsecrets.yml
   vars:
-    ansible_debug: true
+    ansible_debug: false
+    windows_isos_list: []
+    bsd_isos_list: []
+    debian_isos_list: []
+    centos_isos_list: []
+    opnsense_isos_list: []
+    pfsense_isos_list: []
+    ubuntu_isos_list: []
+    proxmox_isos_list: []
   tasks:
-    - name: Load the requested vars fro; json files
+    - name: Load the requested vars from json files
       ansible.builtin.set_fact:
         vars_file: "{{ lookup('file', 'vars.json') | from_json }}"
     - name: Showing content of vars.json
@@ -27,11 +35,12 @@
           - "-------------"
           - "{{ vars_file }}"
           - "-------------"
-          - "{{ vars_file.hcloud_token }}"
+          # - "{{ vars_file.hcloud_token }}"
           - "-------------"
       when: ansible_debug
     - name: defining variables.
       ansible.builtin.set_fact:
+        no_log: true
         api_token: "{{ vars_file.hcloud_token }}"
     - name: Load the JSON location file content
       hetzner.hcloud.hcloud_image_info:
@@ -39,31 +48,154 @@
     - name: Print the infos sended by the server
       debug:
         var: hcloud_image_info
+      when: ansible_debug
     - name: Gather all images types
+      include_tasks: tasks/subtasks/hcloud_images_types_infos.yml
+    # - name: Gather all images types
+    #   ansible.builtin.set_fact:
+    #     no_log: true
+    #     debian_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','debian')|map(attribute='name')|join(',') }}"
+    #     centos_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','centos')|map(attribute='name')|join(',') }}"
+    #     ubuntu_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','ubuntu')|map(attribute='name')|join(',') }}"
+    #     fedora_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','fedora')|map(attribute='name')|join(',') }}"
+    # - name: Debugging all images types
+    #   ansible.builtin.debug:
+    #     msg:
+    #       - '--------------------'
+    #       - "{{ debian_images_list }}"
+    #       - '--------------------'
+    #       - "{{ centos_images_list }}"
+    #       - '--------------------'
+    #       - "{{ ubuntu_images_list }}"
+    #       - '--------------------'
+    #       - "{{ fedora_images_list }}"
+    #       - '--------------------'
+      # when: ansible_debug
+    - name: Gather all images informations.
+      include_tasks: tasks/subtasks/hcloud_isos_info.yml
+    # - name: Gather hcloud isos infos
+    #   hetzner.hcloud.hcloud_isos_info:
+    #     # name: "pfSense-CE-2.6.0-RELEASE-amd64.iso" # For querying an ISO image by it's name
+    #     # id: 12164  # For querying an ISO image by it s ID
+    #   register: hcloud_isos_info
+    - name: Gather hcloud datacenter information
+      include_tasks: tasks/subtasks/hcloud_datacenter_infos.yml
+      # hetzner.hcloud.hcloud_datacenter_info:
+      # register: hcloud_datacenter_info
+    # - name: Gather server type informations
+    #   hetzner.hcloud.hcloud_server_type_info:
+    #   register: hcloud_server_type_infos 
+    # - name: Print the gathered infos
+    #   debug:
+    #     var: hcloud_isos_info.hcloud_isos_info
+    #   when: ansible_debug
+    # - name: Creating variables
+    #   ansible.builtin.set_fact:
+        # bsd_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+BSD.+') | map(attribute='name')|join(',') }}"
+        # debian_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Debian.+') | map(attribute='name')|join(',') }}"
+        # centos_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+CentOS.+') | map(attribute='name')|join(',') }}"
+        # opnsense_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+OPNsense.+') | map(attribute='name')|join(',') }}"
+        # pfsense_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+key/value.+') | map(attribute='name')|join(',') }}"
+        # ubuntu_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Ubuntu.+') | map(attribute='name')|join(',') }}"
+        # proxmox_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Proxmox.+') | map(attribute='name')|join(',') }}"
+        # windows_isos_list: "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Windows Server.+') | map(attribute='name')|join(',') }}"
+
+    - name: Gathering Windows images dictionaries
+      include_tasks: tasks/subtasks/hcloud_windows_isos_infos.yml
+      # ansible.builtin.set_fact:
+      #   no_log: false
+      #   windows_isos_list: "{{ windows_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      # loop:
+      #   "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Windows Server.+') }}"
+
+    - name: Gathering Bsd images dictionaries
+      include_tasks: tasks/subtasks/hcloud_bsd_isos_infos.yml
+      # ansible.builtin.set_fact:
+      #   no_log: false
+      #   bsd_isos_list: "{{ bsd_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      # loop:
+      #   "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+BSD.+') }}"
+
+    - name: Gathering Debian images dictionaries
+      include_tasks: tasks/subtasks/hcloud_debian_isos_infos.yml
+      # ansible.builtin.set_fact:
+      #   no_log: false
+      #   debian_isos_list: "{{ debian_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      # loop:
+      #   "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Debian.+') }}"
+
+    - name: Gathering Centos images dictionaries
+      include_tasks: tasks/subtasks/hcloud_centos_isos_infos.yml
+      # ansible.builtin.set_fact:
+      #   no_log: false
+      #   centos_isos_list: "{{ centos_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      # loop:
+      #   "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+CentOS.+') }}"
+
+    - name: Gathering OPNsense images dictionaries
       ansible.builtin.set_fact:
-        debian_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','debian')|map(attribute='name')|join(',') }}"
-        centos_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','centos')|map(attribute='name')|join(',') }}"
-        ubuntu_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','ubuntu')|map(attribute='name')|join(',') }}"
-        fedora_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','fedora')|map(attribute='name')|join(',') }}"
-    - name: Debugging all images types
+        no_log: false
+        opnsense_isos_list: "{{ opnsense_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      loop:
+        "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+OPNsense.+') }}"
+
+    - name: Gathering PFsense images dictionaries
+      ansible.builtin.set_fact:
+        no_log: false
+        pfsense_isos_list: "{{ pfsense_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      loop:
+        "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+pfSense.+') }}"
+
+    - name: Gathering Ubuntu images dictionaries
+      ansible.builtin.set_fact:
+        no_log: false
+        ubuntu_isos_list: "{{ ubuntu_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      loop:
+        "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Ubuntu.+') }}"
+
+    - name: Gathering Proxmox images dictionaries
+      ansible.builtin.set_fact:
+        no_log: false
+        proxmox_isos_list: "{{ proxmox_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+      loop:
+        "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Proxmox.+') }}"
+
+    - name: debug
       ansible.builtin.debug:
         msg:
           - '--------------------'
-          - "{{ debian_images_list }}"
+          - "{{ debian_isos_list }}"
           - '--------------------'
-          - "{{ centos_images_list }}"
+          - "{{ centos_isos_list }}"
           - '--------------------'
-          - "{{ ubuntu_images_list }}"
+          - "{{ bsd_isos_list }}"
           - '--------------------'
-          - "{{ fedora_images_list }}"
+          - "{{ opnsense_isos_list }}"
           - '--------------------'
-      # when: ansible_debug
-    - name: Gather hcloud isos type infos
-      hetzner.hcloud.hcloud_isos_info:
-        # name: "pfSense-CE-2.6.0-RELEASE-amd64.iso"
-        id: 12164
-      register: output
-    
-    - name: Print the gathered infos
-      debug:
-        var: output.hcloud_isos_info
+          - "{{ pfsense_isos_list }}"
+          - '--------------------'
+          - "{{ ubuntu_isos_list }}"
+          - '--------------------'
+          - "{{ proxmox_isos_list }}"
+          - '--------------------'
+          - "{{ windows_isos_list }}"
+          - '--------------------'
+      when: ansible_debug
+
+    # - name: Gathering informations for server types.
+      # include_tasks: server_types_info.yml
+      # vars:
+      #   - server_types_data: "{{ loop_var }}"
+      # loop: ["cx11", "cpx11"]
+      #   # - { server_var: "server_cx11", server_name: "cx11"}
+      #   # - { server_var: "server_cpx11", server_name: "cpx11"}
+      # loop_control:
+      #   loop_var:
+      #     - loop_var
+        
+    #   ansible.builtin.set_fact:
+    #     set_log: true
+    #     server_types_list: "{{ hcloud_server_type_infos | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+    #   loop:
+    #     "{{ hcloud_server_type_infos.hcloud_server_type_infos | select('match','.+description.+:.+Proxmox.+') }}"
+        

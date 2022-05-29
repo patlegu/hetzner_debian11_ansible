@@ -21,10 +21,17 @@ The password entered previously for encrypting the file, will be asked. You can 
 ```
 echo $HCLOUD_TOKEN
 ```
-
 * ansible_no_log: true|false
+* ansible_debug: true|false
 
 ## How to define all the hetzner information cloud in json files.
+Instead of using the following commands. The same informations are available true the hetzner.hcloud commands. A new module 'hcloud_isos_info' has been created.
+This module has been develooped following the module used to query servers types. It gathers all the informations about the ISO images availables. tu use it for the moment, you have to make a link to this files.
+For example if the hetzner collection is installed in the directory `/usr/local/lib/python3.9/dist-packages/ansible_collections/hetzner`
+```
+ln -s hetzner_servers_ansible/modules/hcloud_isos_info.py /usr/local/lib/python3.9/dist-packages/ansible_collections/hetzner/hcloud/plugins/modules/
+```
+
 ### Hetzner servers type informations
 Hetzner servers types are all generated with the following command to create the json files:
 ```

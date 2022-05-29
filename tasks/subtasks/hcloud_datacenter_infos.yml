@@ -1,0 +1,4 @@
+---
+- name: Gather hcloud datacenter information
+  hetzner.hcloud.hcloud_datacenter_info:
+  register: hcloud_datacenter_info

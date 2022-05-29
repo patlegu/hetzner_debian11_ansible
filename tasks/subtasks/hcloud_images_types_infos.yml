@@ -1,0 +1,21 @@
+---
+- name: Gather all images types
+  ansible.builtin.set_fact:
+    no_log: true
+    debian_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','debian')|map(attribute='name')|join(',') }}"
+    centos_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','centos')|map(attribute='name')|join(',') }}"
+    ubuntu_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','ubuntu')|map(attribute='name')|join(',') }}"
+    fedora_images_list: "{{ hcloud_image_info.hcloud_image_info | selectattr('os_flavor','eq','fedora')|map(attribute='name')|join(',') }}"
+- name: Debugging all images types
+  ansible.builtin.debug:
+    msg:
+      - '--------------------'
+      - "{{ debian_images_list }}"
+      - '--------------------'
+      - "{{ centos_images_list }}"
+      - '--------------------'
+      - "{{ ubuntu_images_list }}"
+      - '--------------------'
+      - "{{ fedora_images_list }}"
+      - '--------------------'
+  when: ansible_debug
