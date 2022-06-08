@@ -1,8 +1,9 @@
 ---
 - name: Gather hcloud isos infos
+  no_log: true
   hetzner.hcloud.hcloud_isos_info:
-  # name: "pfSense-CE-2.6.0-RELEASE-amd64.iso" # For querying an ISO image by it's name
-  # id: 12164  # For querying an ISO image by it s ID
+    # name: "pfSense-CE-2.6.0-RELEASE-amd64.iso" # For querying an ISO image by it's name
+    # id: 12164  # For querying an ISO image by it s ID
   register: hcloud_isos_info
 - name: Print the gathered infos
   debug:

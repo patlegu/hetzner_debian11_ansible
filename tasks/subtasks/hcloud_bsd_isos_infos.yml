@@ -1,7 +1,15 @@
 ---
 - name: Gathering Bsd images dictionaries
   ansible.builtin.set_fact:
-    no_log: false
+    no_log: true
     bsd_isos_list: "{{ bsd_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
   loop:
     "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+BSD.+') }}"
+
+- name: Debugging Bsd images list
+  ansible.builtin.debug:
+    msg:
+      - '--------------------'
+      - "{{ bsd_isos_list }}"
+      - '--------------------'
+  when: ansible_debug

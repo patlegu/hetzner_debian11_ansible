@@ -1,0 +1,15 @@
+---
+- name: Gathering Proxmox images dictionaries
+  ansible.builtin.set_fact:
+    no_log: true
+    proxmox_isos_list: "{{ proxmox_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+  loop:
+    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Proxmox.+') }}"
+
+- name: Debugging Proxmox images list
+  ansible.builtin.debug:
+    msg:
+      - '--------------------'
+      - "{{ proxmox_isos_list }}"
+      - '--------------------'
+  when: ansible_debug

@@ -1,0 +1,15 @@
+---
+- name: Gathering PFsense images dictionaries
+  ansible.builtin.set_fact:
+    no_log: true
+    pfsense_isos_list: "{{ pfsense_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+  loop:
+    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+pfSense.+') }}"
+
+- name: Debugging PFsense images list
+  ansible.builtin.debug:
+    msg:
+      - '--------------------'
+      - "{{ pfsense_isos_list }}"
+      - '--------------------'
+  when: ansible_debug
