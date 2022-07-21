@@ -16,7 +16,7 @@
   #   - vars.json
   #   - gitsecrets.yml
   vars:
-    ansible_debug: false
+    ansible_debug: true
     windows_isos_list: []
     bsd_isos_list: []
     debian_isos_list: []
@@ -29,18 +29,19 @@
     - name: Load the requested vars from json files
       ansible.builtin.set_fact:
         vars_file: "{{ lookup('file', 'vars.json') | from_json }}"
-    - name: Showing content of vars.json
+    - name: Showing content of vars.json      
       ansible.builtin.debug:
         msg:
-          - "-------------"
-          - "{{ vars_file }}"
-          - "-------------"
-          # - "{{ vars_file.hcloud_token }}"
+          # - "-------------"
+          # - "{{ vars_file }}"
+          # - "-------------"
+          - "{{ vars_file.hcloud_token }}"
           - "-------------"
       when: ansible_debug
     - name: defining variables.
       ansible.builtin.set_fact:
-        no_log: true
+        # no_log: true
+        cacheable: true
         api_token: "{{ vars_file.hcloud_token }}"
     - name: Load the JSON location file content
       hetzner.hcloud.hcloud_image_info:

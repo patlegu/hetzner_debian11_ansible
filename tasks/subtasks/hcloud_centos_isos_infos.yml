@@ -2,9 +2,9 @@
 - name: Gathering Centos images dictionaries
   ansible.builtin.set_fact:
     no_log: true
-    centos_isos_list: "{{ centos_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+    centos_isos_list: "{{ centos_isos_list | default([]) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
   loop:
-    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+CentOS.+') }}"
+    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+CentOS.+')|list }}"
 
 - name: Debugging Centos images list
   ansible.builtin.debug:

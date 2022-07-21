@@ -2,9 +2,9 @@
 - name: Gathering OPNsense images dictionaries
   ansible.builtin.set_fact:
     no_log: true
-    opnsense_isos_list: "{{ opnsense_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+    opnsense_isos_list: "{{ opnsense_isos_list | default([]) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
   loop:
-    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+OPNsense.+') }}"
+    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+OPNsense.+')|list }}"
 
 - name: Debugging OPNsense images list
   ansible.builtin.debug:

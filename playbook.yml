@@ -8,17 +8,22 @@
 #########################################################################
 #                   GNU General Public License v3.0                     #
 #########################################################################
+#
+#
+# Playbook used only to learn how to request information from json file.
+#
+#
 ---
 - name: Read Hetzner informations from json data files.
   hosts: localhost
   # debugger: on_failed
   vars:
     ansible_debug: false
-    # location_name: Helsinki
+    location_name: Helsinki
     # location_name: Falkenstein
     # location_name: Nuremberg
-    location_name: Ashburn
-    server_type: "cpx51"
+    # location_name: Ashburn
+    server_type: "cx11"
   tasks:
     - name: Load the JSON location file content
       ansible.builtin.set_fact:
@@ -52,7 +57,7 @@
         core_group_4_to_6: "{{ hetzner_server_types | selectattr('cores','>',3) | selectattr('cores','<=',6)| map(attribute='name')| join(',') }}"
         core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')| join(',') }}"
         # core_group_2_to_3_and_shared_cpu: "{{ hetzner_server_types | selectattr('cpu_type','eq','shared')| selectattr('name','in',core_group_2_to_3)|map(attribute='name')|join(',')}}"
-        requested_group: "{{ hetzner_server_types | selectattr('name','==',server_type) }}"
+        requested_group: "{{ hetzner_server_types | selectattr('name','==',server_type)| map(attribute='name')| join(',') }}"
 
     - name: debug
       ansible.builtin.debug:
@@ -145,15 +150,15 @@
           - "All Server type"
           - "-------------------"
           - "{{ all_server_types }}"
-      # when: ansible_debug
+      when: ansible_debug
 
     - name: Caracteristics of servers with more than 6 cores
       no_log: true
       # vars:
-        # core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')|join(',') }}"
+      #   core_group_over_6: "{{ hetzner_server_types | selectattr('cores','>',6)| map(attribute='name')|join(',') }}"
       ansible.builtin.debug:
         msg: "The server {{ item.name }} has {{ item.cores }} cores with {{ item.disk }} Gb"
-      with_items: "{{ hetzner_server_types | selectattr('name','in',core_group_over_6) }}"
+      loop: "{{ hetzner_server_types | selectattr('name','in',core_group_over_6)|list }}"
       when: ansible_debug
 
     - name: Content of the hetzner_server_types
@@ -166,8 +171,8 @@
     - name: Getting the detail of the requested server for debug
       ansible.builtin.debug:
         msg: "The server {{ item.name }} has {{ item.cores }} cores with {{ item.disk }} Gb"
-      with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
-      # when: ansible_debug
+      loop: "{{ hetzner_server_types | selectattr('name','eq',server_type)|list }}"
+      when: ansible_debug
 
     - name: Getting the cost of the requested server
       ansible.builtin.set_fact:
@@ -180,7 +185,7 @@
         vm_memory: "{{ item.memory }}"
         vm_disk: "{{ item.disk }}"
         vm_price: "{{ item.prices|selectattr('location','eq',vm_location)|map(attribute='price_monthly')|map(attribute='gross')|map('regex_replace', '0{1,}$', '')| product(['EUR'])|map('join',' ')|join(',') }}"
-      with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
+      loop: "{{ hetzner_server_types | selectattr('name','eq',server_type)|list }}"
 
     - name: debugging the detail of the requested server
       ansible.builtin.debug:
@@ -192,7 +197,7 @@
           - "Location: {{ vm_location }}"
           - "vm_price: {{ item.prices|selectattr('location','eq',vm_location)|map(attribute='price_monthly')|map(attribute='gross')|map('regex_replace', '0{1,}$', '')| product(['EUR'])|map('join',' ')|join(',') }}"
           - "-------------------"
-      with_items: "{{ hetzner_server_types | selectattr('name','eq',server_type) }}"
+      loop: "{{ hetzner_server_types | selectattr('name','eq',server_type)|list }}"
       when: ansible_debug
 
     - name: Requested server

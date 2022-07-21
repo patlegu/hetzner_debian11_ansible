@@ -2,9 +2,9 @@
 - name: Gathering Debian images dictionaries
   ansible.builtin.set_fact:
     no_log: true
-    debian_isos_list: "{{ debian_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+    debian_isos_list: "{{ debian_isos_list | default([]) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
   loop:
-    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Debian.+') }}"
+    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Debian.+')|list }}"
 
 - name: Debugging Debian images list
   ansible.builtin.debug:

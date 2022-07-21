@@ -8,7 +8,8 @@
   "longitude": 12.370071,
   "name": "fsn1",
   "network_zone": "eu-central"
-},
+}
+,
 {
   "city": "Nuremberg",
   "country": "DE",
@@ -18,7 +19,8 @@
   "longitude": 11.076665,
   "name": "nbg1",
   "network_zone": "eu-central"
-},
+}
+,
 {
   "city": "Helsinki",
   "country": "FI",
@@ -28,7 +30,8 @@
   "longitude": 24.938379,
   "name": "hel1",
   "network_zone": "eu-central"
-},
+}
+,
 {
   "city": "Ashburn, VA",
   "country": "US",

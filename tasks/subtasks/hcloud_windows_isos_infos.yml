@@ -2,9 +2,9 @@
 - name: Gathering Windows images dictionaries
   ansible.builtin.set_fact:
     no_log: true
-    windows_isos_list: "{{ windows_isos_list | default({}) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
+    windows_isos_list: "{{ windows_isos_list | default([]) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
   loop:
-    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Windows Server.+') }}"
+    "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Windows Server.+')|list }}"
 
 - name: Debugging Windows images list
   ansible.builtin.debug:

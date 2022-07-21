@@ -9,27 +9,37 @@
     all_server_types: "{{ hcloud_server_type_infos.hcloud_server_type_info | map(attribute='name') }}"
     # all_server_types: "{{ hcloud_server_type_infos.hcloud_server_type_info | map(attribute='name') | join(',') }}"
 
-- name: Lauching server_types_info.yml
-  ansible.builtin.set_fact:
-    no_log: false
-    server_types_"{{ item.1 }}": "{{ 'server_types_'.+item.1 | default({}) + [{'name': item.0.name, 'vm_type': item.0.name, 'vm_cores': item.0.cores, 'vm_memory': item.0.memory, 'vm_disk': item.0.disk }] }}"
-#    servers_types: all_server_types.split(',')
+- name: Debugging hcloud_server_type_infos.hcloud_server_type_infos content
+  ansible.builtin.debug:
+    msg:
+      - "---------------"
+      - "{{ hcloud_server_type_infos|type_debug }}"
+      - "{{ hcloud_server_type_infos.hcloud_server_type_info|type_debug }}"
+      - "{{ hcloud_server_type_infos.hcloud_server_type_info[0]|type_debug }}"
+      - "{{ hcloud_server_type_infos.hcloud_server_type_info.name|type_debug }}"
+      - "---------------"
+
+- name: Debugging server_types_info
+  ansible.builtin.debug:
+    msg:
+      - "---------------"
+      # - "{{ item.name, item.cpu_type, item.cores, item.memory, item.disk  }}"
+      - "{{ item.name }}"
+      - "---------------"
   loop:
-    - "{{ hcloud_server_type_infos.hcloud_server_type_info|json_query('[].path') }}"
-    # - "{{ hcloud_server_type_infos.hcloud_server_type_info|subelements(all_server_types) }}"
-  # vars:
-  #   my_var: "{{ lookup('vars', all_server_types) }}"
-    # my_var: "{{ lookup('vars', all_server_types.split(',')) }}"
+    "{{ hcloud_server_type_infos.hcloud_server_type_info }}"
 
-# - name: with_subelements -> loop
-#   ansible.builtin.debug:
-#     msg: "{{ item.0.name }} - {{ item.1 }}"
-#   loop: "{{ hcloud_server_type_infos.hcloud_server_type_info|subelements('servers_types') }}"
+- name: Lauching server_types_info.yml
+  ansible.builtin.set_fact: 
+    no_log: false
+    server_types: "{{ server_types | default([]) + [{'name': item.name, 'vm_type': item.cpu_type, 'vm_cores': item.cores, 'vm_memory': item.memory, 'vm_disk': item.disk }] }}"
+  loop:
+    "{{ hcloud_server_type_infos.hcloud_server_type_info }}"
 
-# - name: Debugging Server types information
-#   ansible.builtin.debug:
-#     msg:
-#       - '--------------------'
-#       - "{{ windows_isos_list }}"
-#       - '--------------------'
-#   when: ansible_debug
+- name: Debugging Server types information
+  ansible.builtin.debug:
+    msg:
+      - '--------------------'
+      - "{{ server_types }}"
+      - '--------------------'
+  when: ansible_debug

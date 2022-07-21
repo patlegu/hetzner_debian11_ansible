@@ -97,14 +97,6 @@
 ,
 {
   "deprecated": null,
-  "description": "NetBSD 9.1 (amd64)",
-  "id": 5031,
-  "name": "NetBSD-9.1-amd64.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
   "description": "CentOS 7.9 (amd64/netinstall)",
   "id": 5215,
   "name": "CentOS-7-x86_64-NetInstall-2009.iso",
@@ -124,14 +116,6 @@
   "description": "Windows Server 2019 Russian",
   "id": 6338,
   "name": "SW_DVD9_Win_Server_STD_CORE_2019_1809.11_64Bit_Russian_DC_STD_MLF_X22-51054.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
-  "description": "OpenBSD 6.9",
-  "id": 7039,
-  "name": "install69.iso",
   "type": "public"
 }
 ,
@@ -209,22 +193,6 @@
 ,
 {
   "deprecated": null,
-  "description": "OpenBSD 7.0",
-  "id": 10117,
-  "name": "install70.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
-  "description": "Oracle Linux 8.4 (amd64/boot)",
-  "id": 10154,
-  "name": "OL8U4_x86_64-boot.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
   "description": "VyOS 1.4 (amd64)",
   "id": 10433,
   "name": "vyos-1.4-rolling-202111150317-amd64.iso",
@@ -249,22 +217,6 @@
 ,
 {
   "deprecated": null,
-  "description": "CentOS 8.5 (amd64/netinstall)",
-  "id": 10719,
-  "name": "CentOS-8.5.2111-x86_64-boot.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
-  "description": "AlmaLinux 8.5 (amd64/boot)",
-  "id": 10720,
-  "name": "AlmaLinux-8.5-x86_64-boot.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
   "description": "IPFire 2.27 (amd64)",
   "id": 10721,
   "name": "ipfire-2.27.x86_64-full-core160.iso",
@@ -281,33 +233,9 @@
 ,
 {
   "deprecated": null,
-  "description": "Archlinux 2021.11.01 (amd64)",
-  "id": 10723,
-  "name": "archlinux-2021.11.01-x86_64.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
-  "description": "Alpine Virtual 3.15 (amd64)",
-  "id": 10724,
-  "name": "alpine-virt-3.15.0-x86_64.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
   "description": "pfSense CE 2.5.2 (amd64)",
   "id": 11161,
   "name": "pfSense-CE-2.5.2-RELEASE-amd64.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
-  "description": "FreeBSD 12.3 (amd64/netinstall)",
-  "id": 11308,
-  "name": "FreeBSD-12.3-RELEASE-amd64-bootonly.iso",
   "type": "public"
 }
 ,
@@ -332,14 +260,6 @@
   "description": "3CX Debian 10 (amd64)",
   "id": 11459,
   "name": "debian-amd64-netinst-3cx.iso",
-  "type": "public"
-}
-,
-{
-  "deprecated": null,
-  "description": "Debian 11.2 (amd64/netinstall)",
-  "id": 11471,
-  "name": "debian-11.2.0-amd64-netinst.iso",
   "type": "public"
 }
 ,
@@ -396,6 +316,70 @@
   "description": "Ubuntu 22.04 Live Server (amd64)",
   "id": 13195,
   "name": "ubuntu-22.04-live-server-amd64.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "AlmaLinux 8.6 (amd64/boot)",
+  "id": 14072,
+  "name": "AlmaLinux-8.6-x86_64-boot.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "AlmaLinux 9.0 (amd64/boot)",
+  "id": 14073,
+  "name": "AlmaLinux-9.0-x86_64-boot.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "Debian 11.3 (amd64/netinstall)",
+  "id": 14074,
+  "name": "debian-11.3.0-amd64-netinst.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "NixOS 22.05 (amd64/minimal)",
+  "id": 14075,
+  "name": "nixos-minimal-22.05.590.f05e7d39a48-x86_64-linux.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "Archlinux 2022.06.01 (amd64)",
+  "id": 14076,
+  "name": "archlinux-2022.06.01-x86_64.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "Alpine Virtual 3.16 (amd64)",
+  "id": 14077,
+  "name": "alpine-virt-3.16.0-x86_64.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "FreeBSD 13.1 (amd64/netinstall)",
+  "id": 14376,
+  "name": "FreeBSD-13.1-RELEASE-amd64-bootonly.iso",
+  "type": "public"
+}
+,
+{
+  "deprecated": null,
+  "description": "NetBSD 9.2 (amd64/bootonly)",
+  "id": 14377,
+  "name": "boot.iso",
   "type": "public"
 }
 ]
