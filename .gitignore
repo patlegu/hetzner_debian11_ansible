@@ -10,4 +10,6 @@ build/output
 To_Be_Deleted
 vars.json
 *secret.yml
+gitsecrets.*
 __pycache__
+TODO.*

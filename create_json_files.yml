@@ -17,14 +17,6 @@
   #   - gitsecrets.yml
   vars:
     ansible_debug: true
-    windows_isos_list: []
-    bsd_isos_list: []
-    debian_isos_list: []
-    centos_isos_list: []
-    opnsense_isos_list: []
-    pfsense_isos_list: []
-    ubuntu_isos_list: []
-    proxmox_isos_list: []
   tasks:
     - name: Load the requested vars from json files
       ansible.builtin.set_fact:
@@ -35,12 +27,12 @@
           # - "-------------"
           # - "{{ vars_file }}"
           # - "-------------"
-          - "{{ vars_file.hcloud_token }}"
-          - "-------------"
+          # - "{{ vars_file.hcloud_token }}"
+          # - "-------------"
       when: ansible_debug
     - name: defining variables.
       ansible.builtin.set_fact:
-        # no_log: true
+        no_log: true
         cacheable: true
         api_token: "{{ vars_file.hcloud_token }}"
     - name: Load the JSON location file content

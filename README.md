@@ -1,9 +1,12 @@
-Hetzner_debian11_ansible
+Hetzner_server_ansible
 =========
 
-The purpose of this role is to create a server on the Hetzner Cloud infrastructure.
+## The purpose of this role is to create a server on the Hetzner Cloud infrastructure.
+>For the moment, this role is not functional. I'm still learning how to use all the fonctionnality of the commands of Hetzner collection. So, a lot of modification, addons and deletions. This is __useless__ for the moment, until this disclaimer is not deleted.
 
-## how to define and use hetzner token.
+
+## how to define and use hetzner token manually and securelly (I hope)
+### From command line and environment variable.
 * Put it in the vars.json (copy vars.example.json)
 * Encrypt it with ansible-vault to get more security:
 ```
@@ -13,18 +16,35 @@ Confirm New Vault password:
 Encryption successful
 ```
 * install jq ([sed for json](https://stedolan.github.io/jq/)) on your server if you don't have it.
-* initialize you token as a variable:
+* initialize your token as a variable:
 ```
 export HCLOUD_TOKEN=$(ansible-vault view vars.json|jq -r .hcloud_token)
 ```
-The password entered previously for encrypting the file, will be asked. You can check the variable with the folowing command:
+The password entered previously for encrypting the file, will be asked.
+
+You can check the variable with the folowing command:
 ```
 echo $HCLOUD_TOKEN
 ```
+### In the playbook:
+```
+    - name: Load the requested vars from json files
+      ansible.builtin.set_fact:
+        vars_file: "{{ lookup('file', 'vars.json') | from_json }}"
+```
+All the Hetzner modules will used the variable `hcloud_token` or the environment variable `HCLOUD_TOKEN` if not find. To decrypt the vars.json, you need to call your playbook with the option `--ask-vault-pass`.
+For example:
+```
+ansible-playbook --ask-vault-pass create_json_files.yml
+```
+
+
+## Variables:
 * ansible_no_log: true|false
 * ansible_debug: true|false
 
-## How to define all the hetzner information cloud in json files.
+## This section is not needed anymore. All the informations are gathered automaticaly. Will be deleted later.
+### How to define all the hetzner information cloud in json files.
 Instead of using the following commands. The same informations are available true the hetzner.hcloud commands. A new module 'hcloud_isos_info' has been created.
 This module has been develooped following the module used to query servers types. It gathers all the informations about the ISO images availables. tu use it for the moment, you have to make a link to this files.
 For example if the hetzner collection is installed in the directory `/usr/local/lib/python3.9/dist-packages/ansible_collections/hetzner`

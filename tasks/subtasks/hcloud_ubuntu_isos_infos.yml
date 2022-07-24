@@ -1,7 +1,7 @@
 ---
 - name: Gathering Ubuntu images dictionaries
   ansible.builtin.set_fact:
-    no_log: false
+    no_log: true
     ubuntu_isos_list: "{{ ubuntu_isos_list | default([]) + [{'id': item.id, 'name': item.name, 'description': item.description }] }}"
   loop:
     "{{ hcloud_isos_info.hcloud_isos_info | select('match','.+description.+:.+Ubuntu.+')|list }}"
